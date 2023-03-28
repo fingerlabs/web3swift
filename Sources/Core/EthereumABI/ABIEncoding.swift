@@ -228,12 +228,7 @@ extension ABIEncoder {
             return data.setLengthRight(32)
         case .string:
             if let string = value as? String {
-                var dataGuess: Data?
-                if string.hasHexPrefix() {
-                    dataGuess = Data.fromHex(string.lowercased().stripHexPrefix())
-                } else {
-                    dataGuess = string.data(using: .utf8)
-                }
+                var dataGuess: Data? = string.data(using: .utf8)
                 guard let data = dataGuess else {break}
                 let minLength = ((data.count + 31) / 32)*32
                 guard let paddedData = data.setLengthRight(UInt64(minLength)) else {break}
